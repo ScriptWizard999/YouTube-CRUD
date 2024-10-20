@@ -1,0 +1,45 @@
+name: Publish Package
+
+on:
+  push:
+    tags:
+      - 'v*'  # Only run on version tags like v1.0.0
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.11'  # or your specific Python version
+
+      - name: Install dependencies
+        run: |
+          pip install poetry
+          poetry install
+
+      - name: Build package
+        run: |
+          poetry build
+
+      - name: Publish to TestPyPI
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${ secrets.PYPI_TOKEN }
+        run: |
+          pip install twine
+          twine upload --repository testpypi dist/*
+
+      # Uncomment the following block to publish to PyPI
+      # - name: Publish to PyPI
+      #   env:
+      #     TWINE_USERNAME: __token__
+      #     TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+      #   run: |
+      #     pip install twine
+      #     twine upload dist/*
