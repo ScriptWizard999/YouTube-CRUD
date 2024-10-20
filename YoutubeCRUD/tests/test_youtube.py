@@ -3,7 +3,7 @@ from youtube_crud.youtube import YouTubeCRUD
 
 class TestYouTubeCRUD(unittest.TestCase):
     def setUp(self):
-        self.youtube = YouTubeCRUD(api_key="AIzaSyAsLeRZJmK2ZCsT5NjR5LXJA64KNYQp7h4")
+        self.youtube = YouTubeCRUD(api_key="your api key")
 
     def test_create_video(self):
         result = self.youtube.create_video("Test Title", "Test Description")
